@@ -43,6 +43,7 @@ jobs:
           https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf
 
       - name: تشغيل النموذج
+        timeout-minutes: 3
         run: |
-          timeout --kill-after=10 120 ./llama.cpp/build/bin/llama-cli -m model.gguf \
+          timeout --kill-after=10 30 ./llama.cpp/build/bin/llama-cli -m model.gguf \
           -p "اكتب جملة ترحيبية قصيرة" -n 100 -no-cnv < /dev/null
