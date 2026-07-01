@@ -44,5 +44,5 @@ jobs:
 
       - name: تشغيل النموذج
         run: |
-          timeout 120 ./llama.cpp/build/bin/llama-cli -m model.gguf \
-          -p "اكتب جملة ترحيبية قصيرة" -n 100 -no-cnv
+          timeout --kill-after=10 120 ./llama.cpp/build/bin/llama-cli -m model.gguf \
+          -p "اكتب جملة ترحيبية قصيرة" -n 100 -no-cnv < /dev/null
