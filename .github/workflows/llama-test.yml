@@ -6,13 +6,13 @@ jobs:
   run-llama:
     runs-on: ubuntu-latest
     steps:
-      - name: تحميل llama.cpp
+      - name: بناء llama.cpp من المصدر
         run: |
-          curl -L -o llama.zip https://github.com/ggml-org/llama.cpp/releases/latest/download/llama-b1-bin-ubuntu-x64.zip || \
-          (echo "تحميل بديل عبر البناء من المصدر" && \
-           git clone https://github.com/ggml-org/llama.cpp && \
-           cd llama.cpp && cmake -B build && cmake --build build --config Release -j)
-
+          git clone --depth 1 https://github.com/ggml-org/llama.cpp
+          cd llama.cpp
+          cmake -B build -DLLAMA_CURL=OFF
+          cmake --build build --config Release -j$(nproc) --target llama-cli
+          ls -la build/bin/
       - name: تحميل نموذج Llama 3.2 1B مكمّم
         run: |
           curl -L -o model.gguf \
