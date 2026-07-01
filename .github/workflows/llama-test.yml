@@ -1,0 +1,24 @@
+name: Run Llama Test
+on:
+  workflow_dispatch:
+
+jobs:
+  run-llama:
+    runs-on: ubuntu-latest
+    steps:
+      - name: تحميل llama.cpp
+        run: |
+          curl -L -o llama.zip https://github.com/ggml-org/llama.cpp/releases/latest/download/llama-b1-bin-ubuntu-x64.zip || \
+          (echo "تحميل بديل عبر البناء من المصدر" && \
+           git clone https://github.com/ggml-org/llama.cpp && \
+           cd llama.cpp && cmake -B build && cmake --build build --config Release -j)
+
+      - name: تحميل نموذج Llama 3.2 1B مكمّم
+        run: |
+          curl -L -o model.gguf \
+          https://huggingface.co/bartowski/Llama-3.2-1B-Instruct-GGUF/resolve/main/Llama-3.2-1B-Instruct-Q4_K_M.gguf
+
+      - name: تشغيل النموذج
+        run: |
+          ./llama.cpp/build/bin/llama-cli -m model.gguf \
+          -p "اكتب جملة ترحيبية قصيرة" -n 100
